@@ -1,0 +1,43 @@
+	addi    $16, $0, 2
+	addi    $t0, $0, 1
+	lw      $a0, 2($16)
+	lbu  	$a1, 4($16)
+	lh  	$a2, 8($16)
+	lb   	$a3, 0($0)
+	srl     $a0, $a0, 24
+	andi    $a2, $a2, 0x00FF
+	sra     $a3, $a3, 4
+	sll     $a3, $a3, 29
+	srl     $a3, $a3, 29
+	jal     ht
+	halt
+	halt
+	halt
+	halt
+	halt
+ht: addi $29, $29, -20
+    sw $a0, 2($29)
+    sw $a1, 6($29)
+    sw $a2, 10($29)
+    sw $a3, 14($29)
+    sw $ra, 18($29)
+    bne $a0, St0, LOOP
+    addi $sp, $sp, 20
+    jr $31
+LOOP: addi $a3, $a3 -1
+    add $t2, $a1, $0
+    add $a1, $a0, $0
+    add $a0, $t2, $0
+	jal ht
+	lw $a0, 2($sp)
+	lw $a1, 6($sp)
+	lw $a2, 10($sp)
+	lw $a3, 14($sp)
+	addi $a3, $a3, -1
+	xor $a0, $a0, $a1
+	xor $a1, $a0, $a1
+	xor $a0, $a0, $a1
+	jal ht
+	lw $ra, 18($sp)
+	addi $sp, $sp, 20
+	jr $ra
